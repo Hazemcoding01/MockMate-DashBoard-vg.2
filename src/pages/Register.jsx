@@ -76,8 +76,9 @@ const Register = () => {
     } catch (err) {
       showNotification('Connection error, please try again.', 'error');
     } finally {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+      // تصحيح اللوجيك هنا لإيقاف تحميل الزرار بأمان دون التسبب في اختفاء محتوى الصفحة
+      setLoading(false);
+    }
   };
 
   return (
