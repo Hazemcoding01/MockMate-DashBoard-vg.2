@@ -7,8 +7,6 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  
-  // إضافة State للمفتاح السري 🔑
   const [adminKey, setAdminKey] = useState('');
 
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
@@ -41,27 +39,43 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // دالة سحرية سريعة لتحويل النص إلى SHA-256 Hash 🔒
+  const hashKey = async (string) => {
+    const utf8 = new TextEncoder().encode(string);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // 1. التحقق من الـ Admin Key السري قبل أي خطوة وقبل ما نكلم السيرفر 🚨
-if (btoa(adminKey) !== 'TW9ja01hdGVBZG1pbjIwMjY=') {
-        showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح! لا يمكنك إنشاء الحساب.', 'error');
-      return;
-    }
-
-    if (formData.password !== confirmPassword) {
-      showNotification('Passwords do not match!', 'error');
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      showNotification('Password must be at least 6 characters.', 'error');
-      return;
-    }
-
     setLoading(true);
+
     try {
+      // حساب بصمة الكود اللي اليوزر كتبه حالا
+      const inputHash = await hashKey(adminKey);
+      const correctHash = '839556637b77464871e06ff4907954a6db2cc977e20b33a55cd7885542bdf9f5';
+
+      // مقارنة البصمة بالبصمة (مستحيل فكها أو قراءتها) 🚨
+      if (inputHash !== correctHash) {
+        showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح!', 'error');
+        setLoading(false);
+        return;
+      }
+
+      if (formData.password !== confirmPassword) {
+        showNotification('Passwords do not match!', 'error');
+        setLoading(false);
+        return;
+      }
+
+      if (formData.password.length < 6) {
+        showNotification('Password must be at least 6 characters.', 'error');
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -83,7 +97,7 @@ if (btoa(adminKey) !== 'TW9ja01hdGVBZG1pbjIwMjY=') {
       }
     } catch (err) {
       showNotification('Connection error, please try again.', 'error');
-    } finally {
+    } finaly {
       setLoading(false);
     }
   };
@@ -154,7 +168,6 @@ if (btoa(adminKey) !== 'TW9ja01hdGVBZG1pbjIwMjY=') {
             />
           </div>
 
-          {/* إضافة حقل الـ Admin Verification Key السري هنا بالشكل المتناسق 🔑 */}
           <div className="md:col-span-2">
             <input
               type="password"
