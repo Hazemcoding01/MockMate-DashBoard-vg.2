@@ -7,6 +7,9 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // إضافة State للمفتاح السري 🔑
+  const [adminKey, setAdminKey] = useState('');
 
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
   const toastTimerRef = useRef(null);
@@ -41,6 +44,12 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    // 1. التحقق من الـ Admin Key السري قبل أي خطوة وقبل ما نكلم السيرفر 🚨
+    if (adminKey !== 'MockMateAdmin2026') {
+      showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح! لا يمكنك إنشاء الحساب.', 'error');
+      return;
+    }
+
     if (formData.password !== confirmPassword) {
       showNotification('Passwords do not match!', 'error');
       return;
@@ -53,7 +62,6 @@ const Register = () => {
 
     setLoading(true);
     try {
-      // تم تعديل المسار هنا ليمر عبر البروكسي ويتفادى حظر المتصفح
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -76,7 +84,6 @@ const Register = () => {
     } catch (err) {
       showNotification('Connection error, please try again.', 'error');
     } finally {
-      // تصحيح اللوجيك هنا لإيقاف تحميل الزرار بأمان دون التسبب في اختفاء محتوى الصفحة
       setLoading(false);
     }
   };
@@ -110,7 +117,7 @@ const Register = () => {
             required
             value={formData.username}
             onChange={handleChange}
-            className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+            className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-white"
           />
 
           <input
@@ -120,7 +127,7 @@ const Register = () => {
             required
             value={formData.displayName}
             onChange={handleChange}
-            className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+            className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-white"
           />
 
           <div className="md:col-span-2">
@@ -131,7 +138,7 @@ const Register = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-white"
             />
           </div>
 
@@ -143,7 +150,19 @@ const Register = () => {
               required
               value={formData.phoneNumber}
               onChange={handleChange}
-              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-white"
+            />
+          </div>
+
+          {/* إضافة حقل الـ Admin Verification Key السري هنا بالشكل المتناسق 🔑 */}
+          <div className="md:col-span-2">
+            <input
+              type="password"
+              placeholder="Admin Verification Key"
+              required
+              value={adminKey}
+              onChange={(e) => setAdminKey(e.target.value)}
+              className="w-full bg-[#0b0f1a] border border-red-500/30 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition-all text-white placeholder:text-gray-500"
             />
           </div>
 
@@ -155,7 +174,7 @@ const Register = () => {
               required
               value={formData.password}
               onChange={handleChange}
-              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-white"
             />
             <button
               type="button"
@@ -173,7 +192,7 @@ const Register = () => {
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-white"
             />
           </div>
 
