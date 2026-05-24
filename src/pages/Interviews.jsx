@@ -61,8 +61,7 @@ export default function Interviews() {
     setLoading(true);
     try {
       // تعديل المسار هنا ليمر عبر البروكسي
-      const url = `${BASE}/api/interview-sessions?pageIndex=1&pageSize=50`;
-
+const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
       const res = await fetch(url, { headers });
       if (res.status === 401) return handleUnauthorized();
 

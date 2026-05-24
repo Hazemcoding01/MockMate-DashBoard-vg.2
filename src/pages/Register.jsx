@@ -11,7 +11,6 @@ const Register = () => {
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
   const toastTimerRef = useRef(null);
 
-  // لاحظ: شيلنا role من الـ state
   const [formData, setFormData] = useState({
     username: '',
     displayName: '',
@@ -54,11 +53,10 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://mockmate-001-site1.mtempurl.com/api/users', {
+      // تم تعديل المسار هنا ليمر عبر البروكسي ويتفادى حظر المتصفح
+      const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-
-        // هنا role ثابت Admin (مش جاي من state)
         body: JSON.stringify({ ...formData, role: 'Admin' }),
       });
 
@@ -78,8 +76,8 @@ const Register = () => {
     } catch (err) {
       showNotification('Connection error, please try again.', 'error');
     } finally {
-      setLoading(false);
-    }
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    };
   };
 
   return (
