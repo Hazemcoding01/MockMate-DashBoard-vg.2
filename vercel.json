@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "http://mockmate-001-site1.mtempurl.com/api/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
