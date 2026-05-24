@@ -97,7 +97,7 @@ const Register = () => {
       }
     } catch (err) {
       showNotification('Connection error, please try again.', 'error');
-    } finaly {
+    } finally {
       setLoading(false);
     }
   };
