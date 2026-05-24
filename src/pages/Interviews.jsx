@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BASE = 'http://mockmate-001-site1.mtempurl.com';
+// تم إزالة الرابط المباشر والاعتماد على مسار البروكسي لتجنب مشاكل الـ CORS والـ HTTPS
+const BASE = '';
 
 export default function Interviews() {
   const navigate = useNavigate();
@@ -59,7 +60,8 @@ export default function Interviews() {
   const fetchSessions = async () => {
     setLoading(true);
     try {
-      const url = `${BASE}/interview-sessions?pageIndex=1&pageSize=50`;
+      // تعديل المسار هنا ليمر عبر البروكسي
+      const url = `${BASE}/api/interview-sessions?pageIndex=1&pageSize=50`;
 
       const res = await fetch(url, { headers });
       if (res.status === 401) return handleUnauthorized();
@@ -98,7 +100,8 @@ export default function Interviews() {
     setDetails({ show: true, loading: true, id: sessionId, data: null });
 
     try {
-      const res = await fetch(`${BASE}/interview-sessions/${sessionId}`, { headers });
+      // تعديل المسار هنا ليمر عبر البروكسي
+      const res = await fetch(`${BASE}/api/interview-sessions/${sessionId}`, { headers });
       if (res.status === 401) return handleUnauthorized();
 
       const text = await res.text().catch(() => '');
@@ -333,7 +336,7 @@ export default function Interviews() {
                   );
                 })()}
 
-                {/* Raw JSON (اختياري) */}
+                {/* Raw JSON */}
                 <details className="bg-black/10 border border-gray-900 rounded-2xl p-6">
                   <summary className="cursor-pointer font-black text-sm text-gray-200">
                     Show raw JSON
