@@ -54,7 +54,7 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('https://mockmate-001-site1.mtempurl.com/api/users', {
+      const response = await fetch('http://mockmate-001-site1.mtempurl.com/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
 
