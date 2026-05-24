@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// تم إزالة الرابط المباشر والاعتماد على مسار البروكسي لتجنب مشاكل الـ CORS والـ HTTPS
 const BASE = '';
 
 export default function Interviews() {
@@ -60,8 +59,8 @@ export default function Interviews() {
   const fetchSessions = async () => {
     setLoading(true);
     try {
-      // تعديل المسار ليتطابق مع الـ RewriteRule المخصصة في vercel.json
-const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
+      // تعديل الحروف لتطابق السويجر بالظبط (pageIndex و pageSize)
+      const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
       const res = await fetch(url, { headers });
       if (res.status === 401) return handleUnauthorized();
 
@@ -99,7 +98,6 @@ const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
     setDetails({ show: true, loading: true, id: sessionId, data: null });
 
     try {
-      // تعديل المسار هنا ليتطابق مع البروكسي المخصص في vercel.json
       const res = await fetch(`${BASE}/api/interview-sessions/${sessionId}`, { headers });
       if (res.status === 401) return handleUnauthorized();
 
