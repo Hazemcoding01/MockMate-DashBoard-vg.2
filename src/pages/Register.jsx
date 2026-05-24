@@ -45,8 +45,8 @@ const Register = () => {
     e.preventDefault();
 
     // 1. التحقق من الـ Admin Key السري قبل أي خطوة وقبل ما نكلم السيرفر 🚨
-    if (adminKey !== 'MockMateAdmin2026') {
-      showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح! لا يمكنك إنشاء الحساب.', 'error');
+if (btoa(adminKey) !== 'TW9ja01hdGVBZG1pbjIwMjY=') {
+        showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح! لا يمكنك إنشاء الحساب.', 'error');
       return;
     }
 
