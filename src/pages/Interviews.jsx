@@ -60,8 +60,8 @@ export default function Interviews() {
   const fetchSessions = async () => {
     setLoading(true);
     try {
-      // تعديل المسار هنا ليمر عبر البروكسي
-const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
+      // تعديل المسار ليتطابق مع الـ RewriteRule المخصصة في vercel.json
+      const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
       const res = await fetch(url, { headers });
       if (res.status === 401) return handleUnauthorized();
 
@@ -99,7 +99,7 @@ const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
     setDetails({ show: true, loading: true, id: sessionId, data: null });
 
     try {
-      // تعديل المسار هنا ليمر عبر البروكسي
+      // تعديل المسار هنا ليتطابق مع البروكسي المخصص في vercel.json
       const res = await fetch(`${BASE}/api/interview-sessions/${sessionId}`, { headers });
       if (res.status === 401) return handleUnauthorized();
 
