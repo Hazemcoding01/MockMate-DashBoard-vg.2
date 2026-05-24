@@ -19,7 +19,16 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
+        // فحص الـ Role لمنع اليوزر العادي من تخطي صفحة اللوجين 🚨
+        if (data.role !== 'Admin') {
+          alert('غير مسموح بالدخول: لوحة التحكم مخصصة للمشرفين (Admins) فقط.');
+          return; // بنوقف الكود هنا تماماً وبنمنعه يدخل جوة
+        }
+
+        // لو الحساب Admin بيكمل ويخزن التوكن ويدخل عادي
         localStorage.setItem('token', data.token || data.accessToken);
+        localStorage.setItem('role', data.role);
+        
         navigate('/tracks', { replace: true });
       } else {
         alert('بيانات الدخول غير صحيحة. تأكد من الإيميل والباسورد.');
