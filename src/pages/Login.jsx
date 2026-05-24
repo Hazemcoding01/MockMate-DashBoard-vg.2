@@ -7,7 +7,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // स्टेट لشاشة التنبيه المخصصة
+  // شاشة التنبيه المخصصة (البوب أب المودرن)
   const [errorModal, setErrorModal] = useState({ show: false, message: '' });
 
   const navigate = useNavigate();
@@ -24,8 +24,12 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        // فحص الـ Role لمنع اليوزر العادي
-        if (data.role !== 'Admin') {
+        
+        // استخراج الـ role وتحويله لحروف صغيرة لضمان المقارنة الصح مع الباك إند 🚨
+        const userRole = (data.role || data.user?.role || '').toLowerCase();
+
+        // فحص الـ Role: لو مش admin يترزع برة فوراً بالبوب أب الجميلة
+        if (userRole !== 'admin') {
           setErrorModal({
             show: true,
             message: 'غير مسموح بالدخول: لوحة التحكم مخصصة للمشرفين (Admins) فقط.'
@@ -34,6 +38,7 @@ const Login = () => {
           return;
         }
 
+        // لو الحساب Admin بيكمل ويخزن التوكن والـ role ويدخل عادي
         localStorage.setItem('token', data.token || data.accessToken);
         localStorage.setItem('role', data.role);
         
@@ -60,7 +65,7 @@ const Login = () => {
       
       {/* الـ Custom Pop-up المودرن والجميلة */}
       {errorModal.show && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[#161b2b] border-2 border-red-500/30 p-8 rounded-[2rem] w-full max-w-sm text-center shadow-2xl relative">
             <div className="w-16 h-16 bg-red-500/10 border-2 border-red-500 text-red-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 font-black">
               !
