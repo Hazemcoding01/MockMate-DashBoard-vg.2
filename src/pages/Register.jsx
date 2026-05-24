@@ -39,10 +39,10 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // دالة سحرية مضمونة لتحويل النص إلى SHA-256 Hash بحروف صغيرة 🔒
-  const hashKey = async (string) => {
+  // تغيير الاسم لـ generateSecureHash تفادياً لأي قفلة مع المتصفح 🔒
+  const generateSecureHash = async (string) => {
     const utf8 = new TextEncoder().encode(string);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', utf8);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('').toLowerCase();
   };
@@ -52,12 +52,10 @@ const Register = () => {
     setLoading(true);
 
     try {
-      // تنظيف المدخلات وحساب الـ Hash
-      const inputHash = await hashKey(adminKey.trim());
-      console.log("الهاش المحسوب حالياً هو:", inputHash);
-console.log("الهاش المتوقع الصحيح هو:", correctHash);
-const correctHash = 'f28a6bd2056746c57e732359462846a08a3a2955fec039742d496570a4ec3a95';
-      // مقارنة البصمة بالبصمة (مستحيل فكها أو قراءتها) 🚨
+      // حساب الهاش بناءً على الكود اللي طلع في شاشتك بالظبط
+      const inputHash = await generateSecureHash(adminKey.trim());
+      const correctHash = 'f28a6bd2056746c57e732359462846a08a3a2955fec039742d496570a4ec3a95';
+
       if (inputHash !== correctHash) {
         showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح!', 'error');
         setLoading(false);
@@ -76,6 +74,7 @@ const correctHash = 'f28a6bd2056746c57e732359462846a08a3a2955fec039742d496570a4e
         return;
       }
 
+      // 🚨 رجعنا الـ URL الأصلي بتاعك عشان البروكسي بتاع فيرسل يشتغل صح ومن غير CORS error
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
