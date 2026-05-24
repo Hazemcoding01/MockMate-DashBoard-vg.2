@@ -60,8 +60,9 @@ export default function Interviews() {
     setLoading(true);
     try {
       // تعديل الحروف لتطابق السويجر بالظبط (pageIndex و pageSize)
-      const url = `${BASE}/api/users/me/interview-sessions?pageIndex=1&pageSize=50`;
-      const res = await fetch(url, { headers });
+// الرابط الشامل والصح للآدمن (من غير /users/me):
+const url = `${BASE}/api/interview-sessions?pageIndex=1&pageSize=50`;    
+  const res = await fetch(url, { headers });
       if (res.status === 401) return handleUnauthorized();
 
       const text = await res.text().catch(() => '');
