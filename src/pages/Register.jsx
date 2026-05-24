@@ -56,8 +56,7 @@ const Register = () => {
       const inputHash = await hashKey(adminKey.trim());
       console.log("الهاش المحسوب حالياً هو:", inputHash);
 console.log("الهاش المتوقع الصحيح هو:", correctHash);
-      const correctHash = '839556637b77464871e06ff4907954a6db2cc977e20b33a55cd7885542bdf9f5';
-
+const correctHash = 'f28a6bd2056746c57e732359462846a08a3a2955fec039742d496570a4ec3a95';
       // مقارنة البصمة بالبصمة (مستحيل فكها أو قراءتها) 🚨
       if (inputHash !== correctHash) {
         showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح!', 'error');
