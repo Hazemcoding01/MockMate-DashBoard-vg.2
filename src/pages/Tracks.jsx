@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE = 'http://mockmate-001-site1.mtempurl.com';
+// تم إزالة الرابط المباشر والاعتماد على مسار البروكسي
+const API_BASE = ''; 
 
 const Tracks = () => {
   const navigate = useNavigate();
@@ -49,7 +50,8 @@ const Tracks = () => {
   const fetchTracks = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/tracks?PageIndex=1&PageSize=100`, {
+      // تعديل المسار هنا ليمر عبر البروكسي
+      const res = await fetch(`/api/tracks?PageIndex=1&PageSize=100`, {
         headers: authHeaderOnly(),
       });
 
@@ -95,8 +97,6 @@ const Tracks = () => {
     setDeleteModal({ open: false, track: null });
   };
 
-  // Add: POST /api/tracks  (BODY {name})
-  // Edit: PUT /api/tracks/{id}?name=...
   const handleSaveTrack = async (e) => {
     e.preventDefault();
 
@@ -114,15 +114,15 @@ const Tracks = () => {
       let res;
 
       if (isEdit) {
-        // PUT with query name
-        const url = `${API_BASE}/api/tracks/${trackId}?name=${encodeURIComponent(name)}`;
+        // تعديل المسار للـ PUT
+        const url = `/api/tracks/${trackId}?name=${encodeURIComponent(name)}`;
         res = await fetch(url, {
           method: 'PUT',
-          headers: authHeaderOnly(), // no body
+          headers: Array.isArray(authHeaderOnly()) ? authHeaderOnly() : authHeaderOnly(), 
         });
       } else {
-        // POST with body {name}
-        const url = `${API_BASE}/api/tracks`;
+        // تعديل المسار للـ POST
+        const url = `/api/tracks`;
         res = await fetch(url, {
           method: 'POST',
           headers: authJsonHeaders(),
@@ -166,7 +166,8 @@ const Tracks = () => {
 
     setSaving(true);
     try {
-      const res = await fetch(`${API_BASE}/api/tracks/${track.id}`, {
+      // تعديل المسار للـ DELETE
+      const res = await fetch(`/api/tracks/${track.id}`, {
         method: 'DELETE',
         headers: authHeaderOnly(),
       });

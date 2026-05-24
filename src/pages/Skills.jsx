@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const API_BASE = 'http://mockmate-001-site1.mtempurl.com';
+// تم إزالة الرابط المباشر والاعتماد على مسار البروكسي لتجنب الـ CORS
+const API_BASE = ''; 
 
 const Skills = () => {
   const location = useLocation();
@@ -62,7 +63,8 @@ const Skills = () => {
   );
 
   const fetchTracks = async () => {
-    const res = await fetch(`${API_BASE}/api/tracks?PageIndex=1&PageSize=100`, {
+    // تعديل المسار ليعبر من خلال البروكسي
+    const res = await fetch(`/api/tracks?PageIndex=1&PageSize=100`, {
       headers: authOnly,
     });
 
@@ -79,7 +81,8 @@ const Skills = () => {
   };
 
   const fetchSkills = async () => {
-    let url = `${API_BASE}/api/skills?PageIndex=1&PageSize=100`;
+    // تعديل المسار ليعبر من خلال البروكسي
+    let url = `/api/skills?PageIndex=1&PageSize=100`;
 
     if (trackFilterId) url += `&TrackId=${trackFilterId}`;
     if (debouncedSearch) url += `&SkillName=${encodeURIComponent(debouncedSearch)}`;
@@ -173,9 +176,10 @@ const Skills = () => {
 
     setSaving(true);
     try {
+      // تعديل المسارات للـ PUT والـ POST لتمر عبر البروكسي
       const url = isEdit
-        ? `${API_BASE}/api/skills/${modal.data.id}`
-        : `${API_BASE}/api/skills`;
+        ? `/api/skills/${modal.data.id}`
+        : `/api/skills`;
 
       const res = await fetch(url, {
         method: isEdit ? 'PUT' : 'POST',
@@ -211,7 +215,8 @@ const Skills = () => {
 
     setSaving(true);
     try {
-      const res = await fetch(`${API_BASE}/api/skills/${skill.id}`, {
+      // تعديل المسار للـ DELETE ليمر عبر البروكسي
+      const res = await fetch(`/api/skills/${skill.id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -240,7 +245,6 @@ const Skills = () => {
     params.set('skillId', String(skill.id));
     params.set('skillName', skill.name || '');
 
-    // ابعت track الحالية اللي انت فلترت بيها (مش لازم تكون جاية من URL)
     if (trackFilterId) {
       params.set('trackId', String(trackFilterId));
       if (trackFilterName) params.set('trackName', String(trackFilterName));
@@ -426,7 +430,6 @@ const Skills = () => {
                 onChange={(e) => setSkillName(e.target.value)}
               />
 
-              {/* لو مش مختار Track من الفلتر، خلي المستخدم يختار */}
               {!trackFilterId && (
                 <select
                   value={selectedTrackId}

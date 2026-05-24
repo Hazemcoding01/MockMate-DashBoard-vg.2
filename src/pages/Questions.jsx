@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const API = 'http://mockmate-001-site1.mtempurl.com/api';
-
+const API = '/api';
 const defaultMcqOption = () => ({ id: undefined, optionText: '', isCorrect: false });
 
 const defaultCodingTemplate = () => ({
