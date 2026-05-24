@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE = 'http://mockmate-001-site1.mtempurl.com';
+const API_BASE = 'https://mockmate-001-site1.mtempurl.com';
 
 const Tracks = () => {
   const navigate = useNavigate();

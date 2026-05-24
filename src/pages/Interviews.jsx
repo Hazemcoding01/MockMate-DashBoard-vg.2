@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BASE = 'http://mockmate-001-site1.mtempurl.com';
+const BASE = 'https://mockmate-001-site1.mtempurl.com';
 
 export default function Interviews() {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const API_BASE = 'http://mockmate-001-site1.mtempurl.com';
+const API_BASE = 'https://mockmate-001-site1.mtempurl.com';
 
 const Skills = () => {
   const location = useLocation();
