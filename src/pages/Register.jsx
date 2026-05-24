@@ -39,22 +39,21 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // دالة سحرية سريعة لتحويل النص إلى SHA-256 Hash 🔒
+  // دالة سحرية مضمونة لتحويل النص إلى SHA-256 Hash بحروف صغيرة 🔒
   const hashKey = async (string) => {
     const utf8 = new TextEncoder().encode(string);
     const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('').toLowerCase();
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
-      // حساب بصمة الكود اللي اليوزر كتبه حالا
-      const inputHash = await hashKey(adminKey);
+      // تنظيف المدخلات وحساب الـ Hash
+      const inputHash = await hashKey(adminKey.trim());
       const correctHash = '839556637b77464871e06ff4907954a6db2cc977e20b33a55cd7885542bdf9f5';
 
       // مقارنة البصمة بالبصمة (مستحيل فكها أو قراءتها) 🚨
