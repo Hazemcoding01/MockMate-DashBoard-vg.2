@@ -5,11 +5,16 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // स्टेट لشاشة التنبيه المخصصة
+  const [errorModal, setErrorModal] = useState({ show: false, message: '' });
 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch('/api/users/login', {
         method: 'POST',
@@ -19,28 +24,61 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        // فحص الـ Role لمنع اليوزر العادي من تخطي صفحة اللوجين 🚨
+        // فحص الـ Role لمنع اليوزر العادي
         if (data.role !== 'Admin') {
-          alert('غير مسموح بالدخول: لوحة التحكم مخصصة للمشرفين (Admins) فقط.');
-          return; // بنوقف الكود هنا تماماً وبنمنعه يدخل جوة
+          setErrorModal({
+            show: true,
+            message: 'غير مسموح بالدخول: لوحة التحكم مخصصة للمشرفين (Admins) فقط.'
+          });
+          setLoading(false);
+          return;
         }
 
-        // لو الحساب Admin بيكمل ويخزن التوكن ويدخل عادي
         localStorage.setItem('token', data.token || data.accessToken);
         localStorage.setItem('role', data.role);
         
         navigate('/tracks', { replace: true });
       } else {
-        alert('بيانات الدخول غير صحيحة. تأكد من الإيميل والباسورد.');
+        setErrorModal({
+          show: true,
+          message: 'بيانات الدخول غير صحيحة. تأكد من الإيميل والباسورد.'
+        });
       }
     } catch (err) {
       console.error(err);
-      alert('حصل خطأ في الاتصال بالسيرفر');
+      setErrorModal({
+        show: true,
+        message: 'حصل خطأ في الاتصال بالسيرفر، يرجى المحاولة لاحقاً.'
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f1a] flex items-center justify-center p-4 text-white font-sans">
+    <div className="min-h-screen bg-[#0b0f1a] flex items-center justify-center p-4 text-white font-sans relative">
+      
+      {/* الـ Custom Pop-up المودرن والجميلة */}
+      {errorModal.show && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="bg-[#161b2b] border-2 border-red-500/30 p-8 rounded-[2rem] w-full max-w-sm text-center shadow-2xl relative">
+            <div className="w-16 h-16 bg-red-500/10 border-2 border-red-500 text-red-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 font-black">
+              !
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">تنبيه أمني</h3>
+            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+              {errorModal.message}
+            </p>
+            <button
+              onClick={() => setErrorModal({ show: false, message: '' })}
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-red-600/20"
+            >
+              مفهوم
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="bg-[#161b2b] p-8 rounded-2xl border border-gray-800 w-full max-w-md shadow-2xl">
         <h2 className="text-3xl font-bold mb-2 text-center">
           MockMate <span className="text-blue-500">Login</span>
@@ -56,8 +94,9 @@ const Login = () => {
               type="email"
               placeholder="name@company.com"
               required
+              disabled={loading}
               value={email}
-              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 transition-all"
+              className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500 transition-all disabled:opacity-50"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -75,8 +114,9 @@ const Login = () => {
                 type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
                 required
+                disabled={loading}
                 value={password}
-                className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 pr-20 outline-none focus:border-blue-500 transition-all"
+                className="w-full bg-[#0b0f1a] border border-gray-700 rounded-xl px-4 py-3 pr-20 outline-none focus:border-blue-500 transition-all disabled:opacity-50"
                 onChange={(e) => setPassword(e.target.value)}
               />
 
@@ -90,8 +130,11 @@ const Login = () => {
             </div>
           </div>
 
-          <button className="w-full bg-blue-600 hover:bg-blue-700 font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20">
-            Sign In
+          <button 
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:bg-blue-600/50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'Sign In...' : 'Sign In'}
           </button>
         </form>
 
