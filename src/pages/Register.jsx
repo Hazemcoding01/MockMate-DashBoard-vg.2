@@ -55,6 +55,7 @@ const Register = () => {
       // حساب الهاش بناءً على الكود اللي طلع في شاشتك بالظبط
       const inputHash = await generateSecureHash(adminKey.trim());
       const correctHash = 'f28a6bd2056746c57e732359462846a08a3a2955fec039742d496570a4ec3a95';
+      console.log("الهاش الناتج هو:", inputHash);
 
       if (inputHash !== correctHash) {
         showNotification('عذراً، كود التحقق الخاص بالمشرفين غير صحيح!', 'error');
