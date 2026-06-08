@@ -54,7 +54,7 @@ const Register = () => {
     try {
       // حساب الهاش بناءً على الكود اللي طلع في شاشتك بالظبط
       const inputHash = await generateSecureHash(adminKey.trim());
-      const correctHash = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+      const correctHash = 'efc1ce88de80c023f291e151c0a1e36d411eed9f8b02a11747452a260f906f79';
       console.log("الهاش الناتج هو:", inputHash);
 
       if (inputHash !== correctHash) {
