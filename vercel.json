@@ -3,15 +3,15 @@
   "rewrites": [
     {
       "source": "/api/users/me/interview-sessions(.*)",
-      "destination": "http://mockmate-001-site1.mtempurl.com/users/me/interview-sessions$1"
+      "destination": "http://mockmateai-001-site1.jtempurl.com/users/me/interview-sessions$1"
     },
     {
       "source": "/api/interview-sessions(.*)",
-      "destination": "http://mockmate-001-site1.mtempurl.com/interview-sessions$1"
+      "destination": "http://mockmateai-001-site1.jtempurl.com/interview-sessions$1"
     },
     {
       "source": "/api/(.*)",
-      "destination": "http://mockmate-001-site1.mtempurl.com/api/$1"
+      "destination": "http://mockmateai-001-site1.jtempurl.com/api/$1"
     },
     {
       "source": "/(.*)",
