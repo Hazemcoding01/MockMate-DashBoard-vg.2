@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BASE = '';
+const BASE = '/api';
 
 export default function Interviews() {
   const navigate = useNavigate();
@@ -59,10 +59,9 @@ export default function Interviews() {
   const fetchSessions = async () => {
     setLoading(true);
     try {
-      // تعديل الحروف لتطابق السويجر بالظبط (pageIndex و pageSize)
-// الرابط الشامل والصح للآدمن (من غير /users/me):
-const url = `${BASE}/api/interview-sessions?pageIndex=1&pageSize=50`;    
-  const res = await fetch(url, { headers });
+      // التعديل النهائي القاطع بناءً على السواجر: الحروف كابيتال PageIndex و PageSize
+      const url = 'https://mockmateai-001-site1.jtempurl.com/interview-sessions?PageIndex=1&PageSize=50';
+      const res = await fetch(url, { headers });
       if (res.status === 401) return handleUnauthorized();
 
       const text = await res.text().catch(() => '');
@@ -99,7 +98,7 @@ const url = `${BASE}/api/interview-sessions?pageIndex=1&pageSize=50`;
     setDetails({ show: true, loading: true, id: sessionId, data: null });
 
     try {
-      const res = await fetch(`${BASE}/api/interview-sessions/${sessionId}`, { headers });
+      const res = await fetch(`https://mockmateai-001-site1.jtempurl.com/interview-sessions/${sessionId}`, { headers });
       if (res.status === 401) return handleUnauthorized();
 
       const text = await res.text().catch(() => '');

@@ -76,7 +76,7 @@ const Register = () => {
       }
 
       // 🚨 رجعنا الـ URL الأصلي بتاعك عشان البروكسي بتاع فيرسل يشتغل صح ومن غير CORS error
-      const response = await fetch('/api/users', {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, role: 'Admin' }),
