@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BASE = '/api';
+// الـ BASE هنا متظبطة على السيرفر المباشر عشان باقي المسارات اللي بتستخدمها تحت تفتح علطول وتشتغل
+const BASE = 'https://mockmateai-001-site1.jtempurl.com';
 
 export default function Interviews() {
   const navigate = useNavigate();
@@ -59,8 +60,8 @@ export default function Interviews() {
   const fetchSessions = async () => {
     setLoading(true);
     try {
-      // التعديل النهائي القاطع بناءً على السواجر: الحروف كابيتال PageIndex و PageSize
-      const url = 'https://mockmateai-001-site1.jtempurl.com/interview-sessions?PageIndex=1&PageSize=50';
+      // الرابط المباشر للإنترفيو شغال ومضمون
+      const url = `${BASE}/interview-sessions?PageIndex=1&PageSize=50`; 
       const res = await fetch(url, { headers });
       if (res.status === 401) return handleUnauthorized();
 
@@ -98,7 +99,7 @@ export default function Interviews() {
     setDetails({ show: true, loading: true, id: sessionId, data: null });
 
     try {
-      const res = await fetch(`https://mockmateai-001-site1.jtempurl.com/interview-sessions/${sessionId}`, { headers });
+      const res = await fetch(`${BASE}/interview-sessions/${sessionId}`, { headers });
       if (res.status === 401) return handleUnauthorized();
 
       const text = await res.text().catch(() => '');
