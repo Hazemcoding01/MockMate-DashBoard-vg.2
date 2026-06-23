@@ -6,13 +6,5 @@ export default defineConfig({
   css: {
     transformer: 'postcss',
     minify: false
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://mockmateai-001-site1.jtempurl.com',
-        changeOrigin: true
-      }
-    }
   }
 });
